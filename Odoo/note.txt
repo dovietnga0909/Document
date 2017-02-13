@@ -1,0 +1,52 @@
+- G?i context trong xml : context="{'recruitment_session_id': context.get('recruitment_session_id')}"
+	vd: 
+		<field name="applicant_id"  context="{'recruitment_session_id': context.get('recruitment_session_id')}" attrs="{'readonly': [('status_applicant', 'in', ['not_pass','pass','not_coming'])]}" options="{'no_create': 1, 'no_create_edit': 1}"/>
+
+- ch?n many2one :
+	vd: 
+		
+		@api.model
+		def name_search(self, name='', args=None, operator='ilike', limit=100):
+			context = self._context
+			print("applicant.py self._context: " + str(self._context))
+			if 'recruitment_session_id' in context:
+				if context['recruitment_session_id']:
+					cr = self._cr
+					query = '''select a.hr_applicant_id, b.name from hr_applicant_hr_recruitment_session_rel a, hr_applicant b
+							  where a.hr_recruitment_session_id=%s and a.hr_applicant_id = b.id'''
+					cr.execute(query, (context['recruitment_session_id'],))
+					applicants = cr.dictfetchall()
+					result = []
+					for a in applicants:
+						result.append([a['hr_applicant_id'], a['name']])
+					res = result
+				else:
+					res = []
+			else:
+				res = super(applicant, self).name_search(name=name, args=args, operator=operator, limit=limit)
+			return res
+
+-file path hi?n t?i:
+dir = os.path.dirname(os.path.realpath(__file__))
+- d?c file 
+with open(dir + os.path.sep + 'abc.txt') as f:
+    data = f.read()
+    data_file64 = data.encode("base64")
+______________________________________________________
+@http.route(route='/demo_route', auth='public')
+def demo_route(self, **kwargs):
+    dir = os.path.dirname(os.path.realpath(__file__))
+    # file_name = dir + os.path.sep + "nhan_vien.csv"
+    print("ngadv")
+    print("dir: " + str(dir))
+    print("os.path.realpath(__file__): " + str(os.path.realpath(__file__)))
+    print("os.path.sep: " + str(os.path.sep))
+    with open(dir + os.path.sep + 'abc.txt') as f:
+        data = f.read()
+        data_file64 = data.encode("base64")
+
+        print("data_file64: " + str(data_file64))
+
+
+
+
