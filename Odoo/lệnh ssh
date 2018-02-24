@@ -1,0 +1,13 @@
+ssh:
+xem log nhanh: journalctl -f -u odoo-aht
+đọc file: nano /etc/odoo-aht-server.conf
+restart sever: systemctl restart odoo-aht
+chuyển đến thư mục: cd /
+giải nén file gz: gunzip tên file
+chuyển đổi tài khoản: su tên tài khoản
+trong tài khoản posgresql để gõ lệnh sql: psql
+xem danh sách db trong psql: \l
+thoát psql: \q
+Thoát tài khoản: exit
+restore db: psql -U odoo_vmt -d odoo_vmt_0222 -1 -f dump_20180223_154501.sql.
+psql -U <username> -d <dbname> -1 -f <filename>.sql
